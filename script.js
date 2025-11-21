@@ -50,7 +50,7 @@ async function fetchDownloadInfo(videoUrl) {
 
   // TikWM: code = 0 berarti sukses
   if (json.code !== 0) {
-    throw new Error(json.msg || "Gagal ambil data dari TikWM");
+    throw new Error(json.msg || "Gagal ambil data");
   }
 
   const data = json.data || {};
@@ -151,7 +151,7 @@ gasBtn.addEventListener("click", async () => {
     return;
   }
 
-  setStatus("info", "Lagi manggil server TikWM…");
+  setStatus("info", "Lagi manggil server terbaik…");
   gasBtn.disabled = true;
   gasBtn.textContent = "Proses…";
 
