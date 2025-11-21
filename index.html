@@ -6,24 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+  <!-- Background blur -->
   <div class="bg-blur"></div>
 
   <main class="page">
+
+    <!-- HEADER -->
     <header class="header">
       <div class="brand">
         <div class="avatar">TS</div>
         <div>
           <h1 class="title">Kalz Downloader (Beta)</h1>
           <p class="subtitle">
-            Tempel URL video publik lalu klik <b>Download</b>. Tidak perlu login / akun.
+            Tempel URL video publik lalu klik <b>Gas</b>. Tidak perlu login / akun.
           </p>
         </div>
       </div>
     </header>
 
+    <!-- INPUT CARD -->
     <section class="card">
       <label class="input-label" for="urlInput">Masukin link VT nya</label>
+
       <div class="input-row">
         <input
           id="urlInput"
@@ -34,39 +40,44 @@
       </div>
 
       <div class="button-row">
-        <button id="gasBtn" class="btn btn-primary">Download</button>
+        <button id="gasBtn" class="btn btn-primary">Gas</button>
         <button id="clearBtn" class="btn btn-ghost">Hapus</button>
       </div>
 
       <p class="hint">
-        Website ini sedang dalam tahap pengembangan mohon bersabar</b>.
+        Website ini sedang dalam tahap pengembangan mohon bersabar.
       </p>
 
       <div id="statusBox" class="status hidden"></div>
 
+      <!-- HASIL -->
       <div id="resultBox" class="result hidden">
         <h3>Hasil Parser</h3>
         <div id="resultList"></div>
       </div>
     </section>
 
+    <!-- ABOUT SECTION -->
     <section class="card card-info">
       <h2>Tentang Kalz Downloader</h2>
       <p>
-        Ini adalah situs pengunduh video berbasis website, kalz downloader siap membantu Anda yang sedang kesulitan saat mendownload video dari tiktok
+        Ini adalah situs pengunduh video berbasis website, kalz downloader siap membantu Anda yang sedang kesulitan saat mendownload video dari Tiktok.
       </p>
+
       <h3>Fitur Utama</h3>
       <ul>
         <li>UI modern, responsif, enak di HP.</li>
         <li>Tanpa login atau install aplikasi.</li>
-        <li>Website gratis untuk publik</li>
-        <li>Tanpa Watermark</li>
+        <li>Website gratis untuk publik.</li>
+        <li>Tanpa Watermark.</li>
       </ul>
+
       <p class="disclaimer">
         Gunakan website ini sesuai kebijakan pengembang.<br>
-        Hak cipta @kalz sann
+        Hak cipta © Kalz Sann.
       </p>
     </section>
+
   </main>
 
   <script src="script.js"></script>
