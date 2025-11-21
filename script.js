@@ -31,12 +31,12 @@ function clearResult() {
 // =======================
 async function fetchDownloadInfo(videoUrl) {
   const apiUrl =
-    "https://snaptik.app/ID2" +
+    "https://www.tikwm.com/api/" +
     encodeURIComponent(videoUrl) +
     "&hd=1";
 
   const res = await fetch(apiUrl, {
-    method: "POST",
+    method: "GET",
     headers: {
       Accept: "application/json",
     },
