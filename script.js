@@ -89,17 +89,23 @@ async function callApi(videoUrl) {
   }
 }
 
-// --------- RENDER (perbaikan: jangan tampilkan thumbnail jika player sudah dipakai) ----------
-// Ganti fungsi renderResult dengan ini
+// Ganti fungsi renderResult di script.js dengan ini
 function renderResult(payload) {
-  if (!resultList || !resultBox) return;
-  if (payload && payload.ok && payload.result) payload = payload.result;
+  if (!resultList || !resultBox) {
+    console.warn("renderResult: missing resultList/resultBox");
+    return;
+  }
 
-  const title = payload.title || payload.name || payload.desc || (payload.data && payload.data.title) || "";
+  // safety normalize
+  if (payload && payload.ok && payload.result) payload = payload.result;
+  resultList.innerHTML = "";
+
+  const title = payload && (payload.title || payload.name || payload.desc || (payload.data && payload.data.title)) || "";
   const thumbnail = pickThumbnail(payload);
 
+  // collect downloads (defensive)
   const downloads = [];
-  if (Array.isArray(payload.downloads) && payload.downloads.length) {
+  if (Array.isArray(payload?.downloads) && payload.downloads.length) {
     payload.downloads.forEach(d => downloads.push({
       label: d.label || d.quality || d.name || "Video",
       url: d.url || d.link || d.src || d,
@@ -108,77 +114,81 @@ function renderResult(payload) {
     }));
   }
   if (!downloads.length) {
-    if (payload.play) downloads.push({ label: "Video (no watermark)", url: payload.play });
-    if (payload.wmplay) downloads.push({ label: "Video (wm)", url: payload.wmplay });
-    if (payload.video && payload.video.play_addr) downloads.push({ label: "Video", url: payload.video.play_addr });
+    if (payload?.play) downloads.push({ label: "Video (no watermark)", url: payload.play });
+    if (payload?.wmplay) downloads.push({ label: "Video (wm)", url: payload.wmplay });
+    if (payload?.video?.play_addr) downloads.push({ label: "Video", url: payload.video.play_addr });
   }
   if (!downloads.length) {
     const urls = Array.from(collectUrls(payload));
     const preferred = urls.filter(u => /\.mp4(\?|$)/i.test(u) || /play|video/i.test(u));
     const uniq = Array.from(new Set(preferred.length ? preferred : urls));
-    uniq.forEach((u,i) => downloads.push({ label: `Video ${i+1}`, url: u }));
+    uniq.forEach((u,i) => downloads.push({ label: `Detected ${i+1}`, url: u }));
   }
 
-  resultList.innerHTML = "";
-
-  // reset player/thumb
-  if (previewVideo) {
-    previewVideo.pause();
-    previewVideo.removeAttribute("src");
-    previewVideo.load();
-    previewVideo.removeAttribute("poster");
-    // ensure attributes
-    previewVideo.setAttribute("playsinline", "");
-    previewVideo.setAttribute("controls", "");
-    previewVideo.setAttribute("crossorigin", "anonymous");
+  // show title if any
+  if (title) {
+    const h = document.createElement("div");
+    h.style.fontWeight = "700";
+    h.style.margin = "8px 0";
+    h.textContent = title;
+    resultList.appendChild(h);
   }
-  if (playerBox) playerBox.classList.add("hidden");
-  if (thumbBox) thumbBox.classList.add("hidden");
 
-  // Try show player using first download
-  let showingPlayer = false;
+  // Try to show player (if elements exist)
+  let showedPlayer = false;
   if (downloads.length && previewVideo && playerBox) {
     const first = downloads[0].url;
     if (first && ( /\.mp4(\?|$)/i.test(first) || /play/i.test(first) || first.startsWith("http") )) {
-      // attach error handler (one-time)
-      const onError = () => {
-        console.warn("previewVideo error event");
-        showStatus("Preview video gagal diputar (CORS/format). Tampilkan thumbnail sebagai fallback.", "error");
-        // fallback -> show thumbnail (if exists) and hide player
-        playerBox.classList.add("hidden");
-        if (thumbnail) {
-          if (thumbBox && thumbImg) {
-            thumbImg.src = thumbnail;
-            thumbBox.classList.remove("hidden");
-          } else {
-            const img = document.createElement("img");
-            img.src = thumbnail;
-            img.alt = title || "thumbnail";
-            img.style.maxWidth = "100%";
-            img.style.borderRadius = "10px";
-            resultList.appendChild(img);
-          }
-        }
-        previewVideo.removeEventListener("error", onError);
-      };
-
-      previewVideo.addEventListener("error", onError, { once: true });
-
       try {
+        // cleanup previous
+        previewVideo.pause();
+        previewVideo.removeAttribute("src");
+        previewVideo.load();
+
+        // attributes (only if element exists)
+        previewVideo.setAttribute("playsinline", "");
+        previewVideo.setAttribute("controls", "");
+        previewVideo.setAttribute("crossorigin", "anonymous");
+
+        // attach error handler once
+        const onError = (e) => {
+          console.warn("previewVideo error:", e);
+          showStatus("Preview video gagal diputar (kemungkinan CORS/redirect). Tombol download tetap tersedia.", "error");
+          if (playerBox) playerBox.classList.add("hidden");
+          previewVideo.removeEventListener("error", onError);
+          // show thumbnail fallback
+          if (thumbnail) {
+            if (thumbBox && thumbImg) {
+              thumbImg.src = thumbnail;
+              thumbBox.classList.remove("hidden");
+            } else {
+              const img = document.createElement("img");
+              img.src = thumbnail;
+              img.alt = title || "thumbnail";
+              img.style.maxWidth = "100%";
+              img.style.borderRadius = "10px";
+              resultList.appendChild(img);
+            }
+          }
+        };
+        previewVideo.addEventListener("error", onError, { once: true });
+
+        // set source (may throw)
         previewVideo.src = first;
         previewVideo.load();
-        // don't autoplay mobile — user can tap play
-        playerBox.classList.remove("hidden");
-        showingPlayer = true;
-      } catch (e) {
-        console.warn("set previewVideo.src error", e);
-        showingPlayer = false;
+        // do not autoplay on mobile; show player and let user tap
+        if (playerBox) playerBox.classList.remove("hidden");
+        showedPlayer = true;
+        hideStatus();
+      } catch (err) {
+        console.warn("set previewVideo failed:", err);
+        showedPlayer = false;
       }
     }
   }
 
-  // jika player tidak dipakai -> tampilkan thumbnail (fallback)
-  if (!showingPlayer && thumbnail) {
+  // if no player or player failed -> show thumbnail
+  if (!showedPlayer && thumbnail) {
     if (thumbBox && thumbImg) {
       thumbImg.src = thumbnail;
       thumbBox.classList.remove("hidden");
@@ -192,53 +202,58 @@ function renderResult(payload) {
     }
   }
 
-  if (title) {
-    const h = document.createElement("div");
-    h.style.fontWeight = "700";
-    h.style.margin = "8px 0";
-    h.textContent = title;
-    resultList.appendChild(h);
-  }
+  // Always add download buttons (video / foto / audio) as fallback
+  const wrap = document.createElement("div");
+  wrap.style.display = "flex";
+  wrap.style.flexWrap = "wrap";
+  wrap.style.gap = "12px";
+  wrap.style.marginTop = "14px";
 
-  // Buttons
-  const btnWrap = document.createElement("div");
-  btnWrap.style.display = "flex";
-  btnWrap.style.flexWrap = "wrap";
-  btnWrap.style.gap = "12px";
-  btnWrap.style.marginTop = "12px";
-
+  // Download Video (first download)
   if (downloads.length) {
     const a = document.createElement("a");
     a.href = downloads[0].url;
-    a.download = "";
     a.className = "download-btn";
     a.textContent = "Download Video";
-    btnWrap.appendChild(a);
+    a.setAttribute("download", "");
+    a.setAttribute("rel", "noopener");
+    wrap.appendChild(a);
   }
 
+  // Download Foto (thumbnail)
   if (thumbnail) {
     const a2 = document.createElement("a");
     a2.href = thumbnail;
-    a2.download = "";
     a2.className = "download-btn";
     a2.textContent = "Download Foto";
-    btnWrap.appendChild(a2);
+    a2.setAttribute("download", "");
+    a2.setAttribute("rel", "noopener");
+    wrap.appendChild(a2);
   }
 
+  // Try to find an audio URL from payload
   const allUrls = Array.from(collectUrls(payload));
-  const audioUrl = allUrls.find(u => /\.(mp3|aac|m4a|wav|ogg)(\?|$)/i.test(u) || /audio/i.test(u));
+  const audioUrl = allUrls.find(u => /\.(mp3|m4a|aac|wav|ogg)(\?|$)/i.test(u) || /audio/i.test(u));
   if (audioUrl) {
     const a3 = document.createElement("a");
     a3.href = audioUrl;
-    a3.download = "";
     a3.className = "download-btn";
     a3.textContent = "Download Audio";
-    btnWrap.appendChild(a3);
+    a3.setAttribute("download", "");
+    a3.setAttribute("rel", "noopener");
+    wrap.appendChild(a3);
   }
 
-  resultList.appendChild(btnWrap);
+  // if no buttons created, show helpful message
+  if (wrap.childElementCount === 0) {
+    const msg = document.createElement("div");
+    msg.textContent = "Tidak ditemukan file download langsung — coba buka hasil API langsung di tab baru.";
+    msg.style.opacity = "0.9";
+    wrap.appendChild(msg);
+  }
+
+  resultList.appendChild(wrap);
   resultBox.classList.remove("hidden");
-}
 }
 
 // ---------- MAIN ----------
