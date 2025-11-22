@@ -20,11 +20,11 @@ body {
 
 /* OVERLAY (TIPIS, FOTO TETAP JELAS) */
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(5, 10, 25, 0.45); /* tipis */
-  backdrop-filter: blur(3px);
+  content:"";
+  position:fixed;
+  inset:0;
+  background: linear-gradient(180deg, rgba(2,6,20,0.45), rgba(2,6,20,0.55));
+  backdrop-filter: none !important;   /* MATIKAN BLUR */
   z-index: 0;
 }
 
