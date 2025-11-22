@@ -6,84 +6,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="bg-blur"></div>
-  <main class="page">
-    <header class="header">
-      <div class="brand">
-        <div class="avatar">TS</div>
-        <div>
-          <h1 class="title">Kalz Downloader (Beta)</h1>
-          <p class="subtitle">
-            Tempel URL video publik lalu klik <b>Download</b>. Tidak perlu login / akun.
-          </p>
-        </div>
+
+<!-- Efek flash petir -->
+<div class="bg-flash"></div>
+
+<main class="page">
+
+  <header class="header">
+    <div class="brand">
+      <div class="avatar">TS</div>
+      <div>
+        <h1 class="title">Kalz Downloader (Beta)</h1>
+        <p class="subtitle">Tempel URL video publik lalu klik <b>Download</b>.</p>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <section class="card">
-      <label class="input-label" for="urlInput">Masukin link VT nya</label>
-      <div class="input-row">
-        <input
-          id="urlInput"
-          type="url"
-          placeholder="https://vt.tiktok.com/XXXXXXXX/"
-          autocomplete="off"
-        />
+  <section class="card">
+
+    <label class="input-label" for="urlInput">Masukin link VT nya</label>
+    <div class="input-row">
+      <input id="urlInput" type="url" placeholder="https://vt.tiktok.com/xxxx" autocomplete="off" />
+    </div>
+
+    <div class="button-row">
+      <button id="gasBtn" class="btn btn-primary">Download</button>
+      <button id="clearBtn" class="btn btn-ghost">Hapus</button>
+    </div>
+
+    <!-- NOTIF -->
+    <div id="statusBox" class="hide"></div>
+
+    <div id="resultBox" class="result hidden">
+      <h3>Hasil Parser</h3>
+
+      <!-- Video -->
+      <div id="playerBox" class="player hidden" style="margin-bottom:12px;">
+        <video id="previewVideo" controls playsinline style="width:100%; border-radius:10px;"></video>
       </div>
 
-      <div class="button-row">
-        <button id="gasBtn" class="btn btn-primary">Download</button>
-        <button id="clearBtn" class="btn btn-ghost">Hapus</button>
+      <!-- Thumbnail -->
+      <div id="thumbBox" class="thumb hidden" style="margin-bottom:12px;">
+        <img id="thumbImg" src="" alt="thumbnail" style="width:100%; border-radius:10px;">
       </div>
 
-      <p class="hint">
-        </h3>Jika ngebug silahkan pencet button download lagi</h3>
-      </p>
+      <div id="resultList" class="result-list"></div>
+    </div>
 
-      <div id="resultBox" class="result hidden">
-        <h3>Hasil Parser</h3>
+  </section>
 
-        <!-- Player preview (satu video) -->
-        <div id="playerBox" class="player hidden" style="margin-bottom:12px;">
-          <video id="previewVideo" controls playsinline style="width:100%; border-radius:10px;">
-            Your browser does not support the video tag.
-          </video>
-        </div>
+  <section class="card card-info">
+    <h2>Tentang Kalz Downloader</h2>
+    <p>Ini website pengunduh video tiktok tanpa watermark.</p>
+    <h3>Fitur</h3>
+    <ul>
+      <li>UI modern</li>
+      <li>Tanpa login</li>
+      <li>Gratis publik</li>
+      <li>Tanpa Watermark</li>
+    </ul>
+    <p class="disclaimer">© kalz sann</p>
+  </section>
 
-        <!-- Thumbnail fallback -->
-        <div id="thumbBox" class="thumb hidden" style="margin-bottom:12px;">
-          <img id="thumbImg" src="" alt="thumbnail" style="width:100%; border-radius:10px;">
-        </div>
+</main>
 
-        <!-- Title + list -->
-        <div id="resultList" class="result-list"></div>
-      </div>
-    </section>
-
-    <section class="card card-info">
-      <h2>Tentang Kalz Downloader</h2>
-      <ul>
-        Ini adalah situs pengunduh video berbasis website, kalz downloader siap membantu Anda yang sedang kesulitan saat mendownload video dari tiktok
-      </ul>
-      <h3>Fitur Utama</h3>
-      <ul>
-        <li>UI modern, responsif, enak di HP.</li>
-        <li>Tanpa login atau install aplikasi.</li>
-        <li>Website gratis untuk publik</li>
-        <li>Tanpa Watermark</li>
-      </ul>
-      <p class="disclaimer">
-        Gunakan website ini sesuai kebijakan pengembang.<br>
-        Hak cipta @kalz sann
-      </p>
-    </section>
-  </main>
-
-  <!-- efek kilat / overlay -->
-  <div class="bg-flash" aria-hidden="true"></div>
-  <canvas id="lightningCanvas" aria-hidden="true"></canvas>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
