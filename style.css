@@ -338,3 +338,6 @@ button.download-btn:focus {
   outline: none !important;
   box-shadow: none !important;
 }
+#resultBox h3 {
+  margin-top: 16px;   /* Atur jarak ke bawah */
+}
