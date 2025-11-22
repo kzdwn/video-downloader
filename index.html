@@ -1,82 +1,67 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <title>Kalz Downloader - Beta</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-</head>
+<!DOCTYPE html>  <html lang="id">  
+<head>  
+  <meta charset="UTF-8" />  
+  <title>Kalz Downloader - Beta</title>  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />  
+  <link rel="stylesheet" href="style.css" />  
+</head>  
+<body>  
+  <div class="bg-blur"></div>    <main class="page">  
+    <header class="header">  
+      <div class="brand">  
+        <div class="avatar">TS</div>  
+        <div>  
+          <h1 class="title">Kalz Downloader (Beta)</h1>  
+          <p class="subtitle">  
+            Tempel URL video publik lalu klik <b>Download</b>. Tidak perlu login / akun.  
+          </p>  
+        </div>  
+      </div>  
+    </header>  <section class="card">  
+  <label class="input-label" for="urlInput">Masukin link VT nya</label>  
+  <div class="input-row">  
+    <input  
+      id="urlInput"  
+      type="url"  
+      placeholder="https://vt.tiktok.com/XXXXXXXX/"  
+      autocomplete="off"  
+    />  
+  </div>  
 
-<body>
-  <div class="bg-blur"></div>
+  <div class="button-row">  
+    <button id="gasBtn" class="btn btn-primary">Download</button>  
+    <button id="clearBtn" class="btn btn-ghost">Hapus</button>  
+  </div>  
 
-  <main class="page">
-    <header class="header">
-      <div class="brand">
-        <div class="avatar">TS</div>
-        <div>
-          <h1 class="title">Kalz Downloader (Beta)</h1>
-          <p class="subtitle">
-            Tempel URL video publik lalu klik <b>Download</b>. Tidak perlu login / akun.
-          </p>
-        </div>
-      </div>
-    </header>
+  <p class="hint">  
+    Website ini sedang dalam tahap pengembangan mohon bersabar</b>.  
+  </p>  
 
-    <section class="card">
-      <label class="input-label" for="urlInput">Masukin link VT nya</label>
+  <div id="statusBox" class="status hidden"></div>  
 
-      <div class="input-row">
-        <input
-          id="urlInput"
-          type="url"
-          placeholder="https://vt.tiktok.com/XXXXXXXX/"
-          autocomplete="off"
-        />
-      </div>
+  <div id="resultBox" class="result hidden">  
+    <h3>Hasil Parser</h3>  
+    <div id="resultList"></div>  
+  </div>  
+</section>  
 
-      <div class="button-row">
-        <button id="gasBtn" class="btn btn-primary">Download</button>
-        <button id="clearBtn" class="btn btn-ghost">Hapus</button>
-      </div>
+<section class="card card-info">  
+  <h2>Tentang Kalz Downloader</h2>  
+  <p>  
+    Ini adalah situs pengunduh video berbasis website, kalz downloader siap membantu Anda yang sedang kesulitan saat mendownload video dari tiktok  
+  </p>  
+  <h3>Fitur Utama</h3>  
+  <ul>  
+    <li>UI modern, responsif, enak di HP.</li>  
+    <li>Tanpa login atau install aplikasi.</li>  
+    <li>Website gratis untuk publik</li>  
+    <li>Tanpa Watermark</li>  
+  </ul>  
+  <p class="disclaimer">  
+    Gunakan website ini sesuai kebijakan pengembang.<br>  
+    Hak cipta @kalz sann  
+  </p>  
+</section>
 
-      <p class="hint">
-        Website ini sedang dalam tahap pengembangan mohon bersabar.
-      </p>
-
-      <!-- STATUS INFO -->
-      <div id="statusBox" class="status hidden"></div>
-
-      <!-- HASIL PARSER -->
-      <div id="resultBox" class="result hidden">
-        <h3>Hasil Parser</h3>
-
-        <!-- LIST HASIL (otomatis diisi di script.js) -->
-        <div id="resultList" class="result-list"></div>
-      </div>
-    </section>
-
-    <section class="card card-info">
-      <h2>Tentang Kalz Downloader</h2>
-      <p>
-        Ini adalah situs pengunduh video berbasis website, kalz downloader siap membantu Anda yang sedang kesulitan saat mendownload video dari tiktok
-      </p>
-
-      <h3>Fitur Utama</h3>
-      <ul>
-        <li>UI modern, responsif, enak di HP.</li>
-        <li>Tanpa login atau install aplikasi.</li>
-        <li>Website gratis untuk publik</li>
-        <li>Tanpa Watermark</li>
-      </ul>
-
-      <p class="disclaimer">
-        Gunakan website ini sesuai kebijakan pengembang.<br>
-        Hak cipta @kalz sann
-      </p>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
-</body>
+  </main>    <script src="script.js"></script>  </body>  
 </html>
