@@ -8,11 +8,10 @@
 </head>
 <body>
   <div class="bg-blur"></div>
-
   <main class="page">
     <header class="header">
       <div class="brand">
-        <div class="avatar">TS</div>
+        <div class="avatar">KZ</div>
         <div>
           <h1 class="title">Kalz Downloader (Beta)</h1>
           <p class="subtitle">
@@ -25,7 +24,12 @@
     <section class="card">
       <label class="input-label" for="urlInput">Masukin link VT nya</label>
       <div class="input-row">
-        <input id="urlInput" type="url" placeholder="https://vt.tiktok.com/XXXXXXXX/" autocomplete="off" />
+        <input
+          id="urlInput"
+          type="url"
+          placeholder="https://vt.tiktok.com/XXXXXXXX/"
+          autocomplete="off"
+        />
       </div>
 
       <div class="button-row">
@@ -34,10 +38,8 @@
       </div>
 
       <p class="hint">
-        <h3>Jika ngebug silahkan pencet button download lagi</h3>
+        </h3>Jika ngebug silahkan pencet button download lagi</h3>
       </p>
-
-      <div id="statusBox" style="display:none"></div>
 
       <div id="resultBox" class="result hidden">
         <h3>Hasil Parser</h3>
@@ -72,16 +74,17 @@
         <li>Tanpa Watermark</li>
       </ul>
       <p class="disclaimer">
-        Gunakan website ini sesuai kebijakan pengembang.<br>
-        Hak cipta @kalz sann
+        Gunakan website ini sesuai kebijakan pengembang dan hukum.<br>
+        </ul>
+        Hak cipta ©kalz sann
       </p>
     </section>
   </main>
 
-  <!-- Efek kilat / lightning canvas (diletakkan AFTER content so we can control stacking) -->
-  <canvas id="lightningCanvas"></canvas>
+  <!-- efek kilat / overlay -->
+  <div class="bg-flash" aria-hidden="true"></div>
+  <canvas id="lightningCanvas" aria-hidden="true"></canvas>
 
-  <!-- script.js is the downloader + lightning script combined -->
   <script src="script.js"></script>
 </body>
 </html>
