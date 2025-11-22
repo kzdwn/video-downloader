@@ -161,6 +161,7 @@ async function downloadBlob(url, filename = "video.mp4") {
 // ------------------------------------------------------
 // Render result: map various possible response shapes into UI
 // ------------------------------------------------------
+
 function renderResult(payload) {
   // normalize payload if wrapper { ok: true, result: {...} }
   if (payload && payload.ok && payload.result) payload = payload.result;
@@ -250,49 +251,54 @@ function renderResult(payload) {
   }
 
   // Title
-if (title) {
-  const h = document.createElement("div");
-  h.style.fontWeight = "700";
-  h.style.margin = "8px 0";
-  h.textContent = title;
-  resultList.appendChild(h);
-}
+  if (title) {
+    const h = document.createElement("div");
+    h.style.fontWeight = "700";
+    h.style.margin = "8px 0";
+    h.textContent = title;
+    resultList.appendChild(h);
+  }
 
-// HAPUS semua detected kecuali 1
-downloads.splice(1);
+  // KEEP ONLY 1 DOWNLOAD (hapus detected lain kecuali index 0)
+  if (downloads.length > 1) downloads.splice(1);
 
-// contoh: di dalam downloads.forEach(d => { ... })
-const node = document.createElement("div");
-node.className = "result-item";
-node.innerHTML = `
-  <div style="display:flex;flex-direction:column;margin-bottom:8px;">
-    <div style="font-weight:600">${d.label}</div>
-    <div style="opacity:.75;font-size:13px">${d.size || ""}</div>
-  </div>
+  // If there's at least one download, render a single row with direct download button
+  if (downloads.length) {
+    const d = downloads[0];
+    const node = document.createElement("div");
+    node.className = "result-item";
+    node.innerHTML = `
+      <div style="display:flex;flex-direction:column;margin-bottom:8px;">
+        <div style="font-weight:600">${d.label}</div>
+        <div style="opacity:.75;font-size:13px">${d.size || ""}</div>
+      </div>
 
-  <div class="download-actions">
-    <!-- tombol open / view (opsional) -->
-    <a href="${d.url}" target="_blank" class="open-btn">Open</a>
-
-    <!-- tombol download video langsung (pake class dan data yang sesuai) -->
-    <a href="${d.url}" class="btn-download download-btn" data-url="${d.url}"
-       data-fn="${(d.filename || "video").replace(/"/g,'')}.mp4" download>
-      Download
-    </a>
-  </div>
-`;
-resultList.appendChild(node);
-});
+      <div class="download-actions">
+        <!-- Direct-download button: uses href + download attribute and data for JS fallback -->
+        <a href="${d.url}" class="btn-download download-btn" data-url="${d.url}"
+           data-fn="${(d.filename || "video").replace(/"/g,'')}.mp4" download>
+          Download Video
+        </a>
+      </div>
+    `;
+    resultList.appendChild(node);
+  } else {
+    // no downloads found
+    const hint = document.createElement("div");
+    hint.style.opacity = "0.85";
+    hint.style.marginTop = "8px";
+    hint.textContent = "Tidak ada link video yang terdeteksi.";
+    resultList.appendChild(hint);
+  }
 
   // ===== new: row with Download Foto + Download Audio (single buttons) =====
-  // Only show when at least one exists (photoUrl or audioUrl)
   if (photoUrl || audioUrl) {
     const box = document.createElement("div");
     box.className = "result-item";
     box.style.display = "flex";
     box.style.justifyContent = "flex-start";
     box.style.gap = "12px";
-    box.style.marginTop = "6px";
+    box.style.marginTop = "12px";
     box.style.alignItems = "center";
 
     if (photoUrl) {
@@ -313,7 +319,6 @@ resultList.appendChild(node);
       box.appendChild(aAudio);
     }
 
-    // if none available, don't append
     resultList.appendChild(box);
   }
 
