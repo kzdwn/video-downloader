@@ -7,11 +7,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- overlay flash (putih sekejap saat kilat) -->
-  <div class="bg-flash" aria-hidden="true"></div>
-
-  <!-- canvas petir (di bawah page) -->
-  <canvas id="lightningCanvas" aria-hidden="true"></canvas>
+  <!-- optional extra overlay (keperluan estetika) -->
+  <div class="bg-blur"></div>
 
   <main class="page">
     <header class="header">
@@ -42,29 +39,35 @@
         <button id="clearBtn" class="btn btn-ghost">Hapus</button>
       </div>
 
-      <!-- statusBox akan dibuat otomatis oleh script jika belum ada -->
+      <p class="hint">
+        </h3>Jika ngebug silahkan pencet button download lagi</h3>
+      </p>
+
       <div id="resultBox" class="result hidden">
         <h3>Hasil Parser</h3>
 
+        <!-- Player preview (satu video) -->
         <div id="playerBox" class="player hidden" style="margin-bottom:12px;">
           <video id="previewVideo" controls playsinline style="width:100%; border-radius:10px;">
             Your browser does not support the video tag.
           </video>
         </div>
 
+        <!-- Thumbnail fallback -->
         <div id="thumbBox" class="thumb hidden" style="margin-bottom:12px;">
           <img id="thumbImg" src="" alt="thumbnail" style="width:100%; border-radius:10px;">
         </div>
 
+        <!-- Title + list -->
         <div id="resultList" class="result-list"></div>
       </div>
     </section>
 
     <section class="card card-info">
       <h2>Tentang Kalz Downloader</h2>
-      <p>
+      <ul>
         Ini adalah situs pengunduh video berbasis website, kalz downloader siap membantu Anda yang sedang kesulitan saat mendownload video dari tiktok
-      </p>
+      </ul>
       <h3>Fitur Utama</h3>
       <ul>
         <li>UI modern, responsif, enak di HP.</li>
@@ -78,6 +81,10 @@
       </p>
     </section>
   </main>
+
+  <!-- efek kilat / overlay (jangan hapus) -->
+  <div class="bg-flash"></div>
+  <canvas id="lightningCanvas"></canvas>
 
   <script src="script.js"></script>
 </body>
