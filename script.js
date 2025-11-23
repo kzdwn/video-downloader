@@ -213,7 +213,7 @@ function renderResult(payload) {
     const urls = Array.from(collectUrls(payload));
     const preferred = urls.filter(u => /\.mp4(\?|$)/i.test(u) || /\/play\/|\/video\//i.test(u) || /play/i.test(u));
     const uniq = Array.from(new Set(preferred.length ? preferred : urls));
-    uniq.forEach((u, i) => downloads.push({ label: `Detected ${i+1}`, url: u, size: "" }));
+    uniq.forEach((u) => downloads.push({ label: "", url: u, size: "" }));
   }
 
   const allUrls = Array.from(collectUrls(payload));
